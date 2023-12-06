@@ -1,76 +1,75 @@
-import nodemailer from "nodemailer";
 require("dotenv").config();
+import nodemailer from "nodemailer";
+import * as path from "path";
+import * as fs from "fs";
+import * as util from "util";
 
-export async function sendMail(
-  name: string,
-  email: string,
-  password: string,
-  message: string
-) {
+const readFile = util.promisify(fs.readFile);
+
+// Load HTML template from file
+const loadHtmlTemplate = async (templatePath: string): Promise<string> => {
+  const filePath = path.join(__dirname, templatePath);
+  return readFile(filePath, "utf-8");
+};
+
+// Create Nodemailer transporter
+const transportObj: any = {
+  host: `${process.env.MAIL_HOST}`,
+  port: `${process.env.MAIL_PORT}`,
+  auth: {
+    user: `${process.env.MAIL_USER}`,
+    pass: `${process.env.MAIL_PASS}`,
+  },
+};
+
+const smtpTrans = nodemailer.createTransport(transportObj);
+
+// Function to dynamically replace placeholders in the HTML template
+const replacePlaceholders = (
+  template: string,
+  replacements: Record<string, string>
+): string => {
+  let result = template;
+  Object.keys(replacements).forEach((key) => {
+    const regex = new RegExp(`{{${key}}}`, "g");
+    result = result.replace(regex, replacements[key]);
+  });
+  return result;
+};
+
+// Main function to send email
+const sendEmail = async (name: string, email: string, password: string) => {
   try {
-    const transportObj: any = {
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    };
-    let mailOpts, smtpTrans, mailoutput;
-    smtpTrans = nodemailer.createTransport(transportObj);
+    // Load HTML template
+    const htmlTemplate = await loadHtmlTemplate(
+      "../template/emailTemplate.html"
+    );
 
-    if (name || email || password || message) {
-      mailoutput = `<html>
-                            <body>
-                                <table style="text-align: left">
-                                    <tr>
-                                        <th>Name:</th>
-                                        <td>${name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Email: </th>
-                                        <td>${email}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Password: </th>
-                                        <td>${password}</td>
-                                    </tr>
-                                    <tr>
-                                        <th> Message </th>
-                                        <td>${message}</td>
-                                    </tr>
-                                </table>
-                            </body>
-                        </html>`;
-    } else {
-      mailoutput = `<html>
-                            <body>
-                                <table style="text-align: left">
-                                    <tr>
-                                        <th>Password: </th>
-                                        <td>${password}</td>
-                                    </tr>
-                                    <tr>
-                                        <th> Message </th>
-                                        <td>Hey There Your Profile Has Been Updated Sucessfully! </td>
-                                    </tr>
-                                </table>
-                            </body>
-                        </html>`;
-    }
-    mailOpts = {
-      to: email,
-      subject: message,
-      html: mailoutput,
+    // Define dynamic data to replace placeholders
+    const dynamicData = {
+      name: name,
+      email: email,
+      password: password,
     };
 
-    smtpTrans.sendMail(mailOpts, function (error, _res) {
-      if (error) {
-        return console.log(error);
-      }
-    });
-    console.log("Message sent successfully!");
+    // Replace placeholders with dynamic data
+    const processedHtml = replacePlaceholders(htmlTemplate, dynamicData);
+
+    // Setup email data
+    const mailOptions = {
+      from: "your-email@gmail.com",
+      to: "recipient-email@example.com",
+      subject: "Test Email with HTML",
+      html: processedHtml,
+    };
+
+    // Send email
+    const info = await smtpTrans.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
   } catch (error) {
-    console.log("Somthing failed to sending mail ", error);
+    console.error("Error sending email:", error);
   }
-}
+};
+
+// Invoke the sendEmail function
+export default sendEmail;

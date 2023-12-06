@@ -4,7 +4,8 @@ import { AuthUtils } from "../utils/authUtils";
 import { PasswordHelper } from "../helpher/passwordHelper";
 import JwtHelper from "../helpher/twtAuthToken";
 import ResponseBuilder from "../helpher/responseBuilder";
-import { sendMail } from "../helpher/nodemailer";
+import sendEmail from "../helpher/nodemailer";
+// import { sendMail } from "../helpher/nodemailer";
 const l10n = require("jm-ez-l10n");
 
 export class AuthController {
@@ -24,7 +25,7 @@ export class AuthController {
       };
       const result = await this.authUtils.registerUser(userData);
       if (result) {
-        await sendMail(firstName, email, password, l10n.t("LOGIN_CREDENTIAL"));
+        await sendEmail(firstName, email, password);
         return res.json(result);
       }
     } catch (error: any) {
