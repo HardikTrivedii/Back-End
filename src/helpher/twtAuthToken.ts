@@ -1,17 +1,19 @@
 import jwt from "jsonwebtoken";
+
 class JwtHelper {
   private static secretKey = `${process.env.JWT_KEY}`;
 
-  static generateToken(
-    payload: Record<string, any>,
+  static async generateToken(
+    payload: Record<string, any>, // Change the type of payload
     expiresIn: string
-  ): string {
-    return jwt.sign(payload, this.secretKey, { expiresIn });
+  ): Promise<string> {
+    const plainObjectPayload = payload.toObject();
+    return await jwt.sign(plainObjectPayload, this.secretKey, { expiresIn });
   }
 
-  static verifyToken(token: string): Record<string, any> | null {
+  static async verifyToken(token: string) {
     try {
-      const decoded = jwt.verify(token, this.secretKey);
+      const decoded: any = await jwt.verify(token, this.secretKey);
       return decoded as Record<string, any>;
     } catch (error) {
       console.log(error);

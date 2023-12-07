@@ -23,53 +23,121 @@ const transportObj: any = {
 };
 
 const smtpTrans = nodemailer.createTransport(transportObj);
-
-// Function to dynamically replace placeholders in the HTML template
-const replacePlaceholders = (
-  template: string,
-  replacements: Record<string, string>
-): string => {
-  let result = template;
-  Object.keys(replacements).forEach((key) => {
-    const regex = new RegExp(`{{${key}}}`, "g");
-    result = result.replace(regex, replacements[key]);
-  });
-  return result;
-};
-
-// Main function to send email
-const sendEmail = async (name: string, email: string, password: string) => {
-  try {
-    // Load HTML template
-    const htmlTemplate = await loadHtmlTemplate(
-      "../template/emailTemplate.html"
-    );
-
-    // Define dynamic data to replace placeholders
-    const dynamicData = {
-      name: name,
-      email: email,
-      password: password,
-    };
-
-    // Replace placeholders with dynamic data
-    const processedHtml = replacePlaceholders(htmlTemplate, dynamicData);
-
-    // Setup email data
-    const mailOptions = {
-      from: "your-email@gmail.com",
-      to: "recipient-email@example.com",
-      subject: "Test Email with HTML",
+export class SendEmail {
+  private mailOptions = async (
+    email: string,
+    processedHtml: any,
+    name?: string
+  ) => {
+    return {
+      from: "hardiktrivedi@gmail.com",
+      to: email,
+      subject: `Welcome ${name}`,
       html: processedHtml,
     };
+  };
+  private replacePlaceholders = async (
+    template: string,
+    replacements: Record<string, string>
+  ): Promise<string> => {
+    let result = template;
+    Object.keys(replacements).forEach((key) => {
+      const regex = new RegExp(`{{${key}}}`, "g");
+      result = result.replace(regex, replacements[key]);
+    });
+    return result;
+  };
 
-    // Send email
-    const info = await smtpTrans.sendMail(mailOptions);
-    console.log("Email sent:", info.response);
-  } catch (error) {
-    console.error("Error sending email:", error);
-  }
-};
+  public sendLoginEmail = async (
+    name: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      // Load HTML template
+      const htmlTemplate = await loadHtmlTemplate(
+        "../template/signupTemplate.html"
+      );
 
-// Invoke the sendEmail function
-export default sendEmail;
+      // Define dynamic data to replace placeholders
+      const dynamicData = {
+        name: name,
+        email: email,
+        password: password,
+      };
+      // Replace placeholders with dynamic data
+      const processedHtml = await this.replacePlaceholders(
+        htmlTemplate,
+        dynamicData
+      );
+
+      // Setup email data
+      const mailOptions = await this.mailOptions(email, processedHtml, name);
+      // Send email
+      const info = await smtpTrans.sendMail(mailOptions);
+      console.log("Email sent:", info.response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
+  public forgotPasswordEmail = async (
+    email: string,
+    otp: string,
+    name: string
+  ) => {
+    try {
+      // Load HTML template
+      const htmlTemplate = await loadHtmlTemplate(
+        "../template/forgotPassword.html"
+      );
+
+      const dynamicData = {
+        otp: otp,
+      };
+      // Replace placeholders with dynamic data
+      const processedHtml = this.replacePlaceholders(htmlTemplate, dynamicData);
+
+      // Setup email data
+      const mailOptions = await this.mailOptions(email, processedHtml, name);
+
+      // Send email
+      const info = await smtpTrans.sendMail(mailOptions);
+      console.log("Email sent:", info.response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
+  public updatePasswordEmail = async (
+    password: string,
+    email: string,
+    name: string
+  ) => {
+    try {
+      // Load HTML template
+      const htmlTemplate = await loadHtmlTemplate(
+        "../template/updatePassword.html"
+      );
+
+      const dynamicData = {
+        password: password,
+      };
+      console.log("dynamicData", dynamicData);
+      // Replace placeholders with dynamic data
+      const processedHtml = await this.replacePlaceholders(
+        htmlTemplate,
+        dynamicData
+      );
+
+      // Setup email data
+      const mailOptions = await this.mailOptions(email, processedHtml, name);
+
+      // Send email
+      const info = await smtpTrans.sendMail(mailOptions);
+      console.log("Email sent:", info.response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+}

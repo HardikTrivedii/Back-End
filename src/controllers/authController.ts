@@ -4,15 +4,17 @@ import { AuthUtils } from "../utils/authUtils";
 import { PasswordHelper } from "../helpher/passwordHelper";
 import JwtHelper from "../helpher/twtAuthToken";
 import ResponseBuilder from "../helpher/responseBuilder";
-import sendEmail from "../helpher/nodemailer";
-// import { sendMail } from "../helpher/nodemailer";
+import generateOTP from "../helpher/optGenerate";
+import { SendEmail } from "../helpher/nodemailer";
 const l10n = require("jm-ez-l10n");
 
 export class AuthController {
   private authUtils: AuthUtils;
+  private sendEmail: SendEmail;
 
   constructor() {
     this.authUtils = new AuthUtils();
+    this.sendEmail = new SendEmail();
   }
   public registerUser = async (req: Request, res: Response) => {
     try {
@@ -25,7 +27,7 @@ export class AuthController {
       };
       const result = await this.authUtils.registerUser(userData);
       if (result) {
-        await sendEmail(firstName, email, password);
+        await this.sendEmail.sendLoginEmail(firstName, email, password);
         return res.json(result);
       }
     } catch (error: any) {
@@ -37,11 +39,8 @@ export class AuthController {
     try {
       const userDetails: any = req.user;
       const jwtExp: any = Math.floor(Date.now() / 1000) + 60 * 60;
-      const payload: User = {
-        accessToken: await JwtHelper.generateToken(
-          { userId: userDetails._id },
-          jwtExp
-        ),
+      const payload: Record<string, any> = {
+        accessToken: await JwtHelper.generateToken(userDetails, jwtExp),
       };
       const updateUser: any = await this.authUtils.updateUser(
         payload,
@@ -62,6 +61,89 @@ export class AuthController {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  public forgotPassword = async (req: any, res: Response) => {
+    try {
+      const userDetails = req.user;
+      const otp = await generateOTP();
+      const payload: User = {
+        otp: Number(otp),
+        otpTimestamp: Date.now(),
+      };
+      await this.authUtils.updateUser(payload, userDetails._id);
+      await this.sendEmail.forgotPasswordEmail(
+        userDetails.email,
+        otp,
+        userDetails.firstName
+      );
+
+      return res.json(
+        ResponseBuilder.success(userDetails.email, l10n.t("OTP_SET"))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  public resetPassword = async (req: any, res: Response) => {
+    try {
+      const userDetails: any = req.user;
+      const { email, otp, newPassword } = req.body;
+      if (email === userDetails.email && otp === userDetails.otp) {
+        const currentTime = Date.now();
+        const otpTimestamp = userDetails.otpTimestamp || 0;
+        const timeElapsed = currentTime - otpTimestamp;
+
+        if (timeElapsed <= 120000) {
+          // Reset the password (for simplicity, updating in-memory database)
+          const payload: User = {
+            password: await PasswordHelper.hashPassword(newPassword),
+            otp: undefined,
+            otpTimestamp: undefined,
+          };
+          await this.authUtils.updateUser(payload, userDetails._id);
+          await this.sendEmail.updatePasswordEmail(
+            newPassword,
+            email,
+            userDetails.firstName
+          );
+          res.json(ResponseBuilder.success(email, l10n.t("PASSWORD_RESET")));
+        } else {
+          res
+            .status(401)
+            .json(ResponseBuilder.invalidOTP(l10n.t("OTP_EXPRIED")));
+        }
+      } else {
+        res.status(401).json(ResponseBuilder.invalidOTP(l10n.t("INVALID_OTP")));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  public updatePassword = async (req: any, res: Response) => {
+    const userDetails = req.user;
+    const { newPassword } = req.body;
+    const payload: User = {
+      password: await PasswordHelper.hashPassword(newPassword),
+    };
+    const updateUser: any = await this.authUtils.updateUser(
+      payload,
+      userDetails._id
+    );
+    if (updateUser && updateUser.statusCode === 200) {
+      await this.sendEmail.updatePasswordEmail(
+        newPassword,
+        userDetails.email,
+        userDetails.firstName
+      );
+      return res.json(
+        ResponseBuilder.success(userDetails, l10n.t("PASSWORD_UPDATE"))
+      );
+    } else {
+      return res.json(ResponseBuilder.notFound());
     }
   };
 }

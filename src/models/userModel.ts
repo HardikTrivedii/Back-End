@@ -5,6 +5,8 @@ export interface User {
   lastName?: string;
   email?: string;
   password?: string;
+  otp?: number;
+  otpTimestamp?: number;
   accessToken?: string;
   resetToken?: string;
 }
@@ -14,6 +16,8 @@ const UserSchema: Schema = new Schema<User>({
   lastName: { type: String, required: true },
   email: { type: String, required: true, index: true },
   password: { type: String, required: true },
+  otp: { type: Number, default: null },
+  otpTimestamp: { type: Number },
   accessToken: { type: String, default: null },
   resetToken: { type: String, default: null },
 });

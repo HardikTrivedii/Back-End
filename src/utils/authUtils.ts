@@ -58,6 +58,8 @@ export class AuthUtils {
       "password",
       "accessToken",
       "resetToken",
+      "otp",
+      "otpTimestamp",
     ];
     fieldsToUpdate.forEach((field) => {
       if (payload[field] !== undefined) {

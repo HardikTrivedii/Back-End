@@ -31,11 +31,15 @@ class ResponseBuilder {
     return this.error(meaage, statusCode);
   }
 
+  static invalidOTP(mesage: string, statusCode = 401): void {
+    return this.error(mesage, statusCode);
+  }
+
   static unauthorized(
     message = l10n.t("UNAUTHORIZED"),
     statusCode = 401
   ): void {
-    this.error(message, statusCode);
+    return this.error(message, statusCode);
   }
 
   static notFound(message = l10n.t("NOT_FOUND"), statusCode = 404): void {

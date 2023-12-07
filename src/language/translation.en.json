@@ -8,5 +8,10 @@
   "INVALID_PASSWORD": "Invalid Password",
   "UNAUTHORIZED": "Unauthorized",
   "NOT_FOUND": "Not Found",
-  "LOGIN_CREDENTIAL": " Your login credentials"
+  "LOGIN_CREDENTIAL": " Your login credentials",
+  "OTP_SET": "OTP sent to your email.",
+  "PASSWORD_RESET": "Password reset successfully",
+  "PASSWORD_UPDATE": "Password updated successfully",
+  "INVALID_OTP": "Invalid otp",
+  "OTP_EXPRIED": "OTP has expired."
 }
