@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.ts --watch"
+    "start": "nodemon src/index.ts --watch",
+    "migrate": "npx sequelize-cli migration:generate --name create-product",
+    "applyMigrate": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -14,25 +17,37 @@
   "author": "Hardik Trivedi",
   "license": "ISC",
   "dependencies": {
+    "@types/cache-manager": "^4.0.6",
+    "@types/moment": "^2.13.0",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^20.10.1",
+    "@types/node": "^20.10.5",
+    "@types/shelljs": "^0.8.15",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "cache-manager": "^5.3.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "jm-ez-l10n": "^1.0.0",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
     "mongoose": "^8.0.2",
     "morgan": "^1.10.0",
+    "mysql2": "^3.6.5",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.3.2"
+    "sequelize": "^6.35.2",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.14"
   }
 }

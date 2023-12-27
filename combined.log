@@ -1,0 +1,23 @@
+info: MySQL operation successfully completed {"timestamp":"2023-12-21T11:55:09.226Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-21T11:55:42.442Z"}
+error: MySQL Error: Error in MySQL operation {"error":{"name":"SequelizeDatabaseError","original":{"code":"ER_SP_UNDECLARED_VAR","errno":1327,"sql":"SELECT `id`, `name`, `price`, `quantity`, `description`, `image`, `addedBy`, `createdAt`, `updatedAt`, `userId` FROM `products` AS `ProductModel` LIMIT NaN, NaN;","sqlMessage":"Undeclared variable: NaN","sqlState":"42000"},"parameters":{},"parent":{"code":"ER_SP_UNDECLARED_VAR","errno":1327,"sql":"SELECT `id`, `name`, `price`, `quantity`, `description`, `image`, `addedBy`, `createdAt`, `updatedAt`, `userId` FROM `products` AS `ProductModel` LIMIT NaN, NaN;","sqlMessage":"Undeclared variable: NaN","sqlState":"42000"},"sql":"SELECT `id`, `name`, `price`, `quantity`, `description`, `image`, `addedBy`, `createdAt`, `updatedAt`, `userId` FROM `products` AS `ProductModel` LIMIT NaN, NaN;"},"timestamp":"2023-12-27T13:00:31.813Z"}
+error: MySQL Error: Error in MySQL operation {"error":{"name":"SequelizeDatabaseError","original":{"code":"ER_SP_UNDECLARED_VAR","errno":1327,"sql":"SELECT `id`, `name`, `price`, `quantity`, `description`, `image`, `addedBy`, `createdAt`, `updatedAt`, `userId` FROM `products` AS `ProductModel` LIMIT NaN, NaN;","sqlMessage":"Undeclared variable: NaN","sqlState":"42000"},"parameters":{},"parent":{"code":"ER_SP_UNDECLARED_VAR","errno":1327,"sql":"SELECT `id`, `name`, `price`, `quantity`, `description`, `image`, `addedBy`, `createdAt`, `updatedAt`, `userId` FROM `products` AS `ProductModel` LIMIT NaN, NaN;","sqlMessage":"Undeclared variable: NaN","sqlState":"42000"},"sql":"SELECT `id`, `name`, `price`, `quantity`, `description`, `image`, `addedBy`, `createdAt`, `updatedAt`, `userId` FROM `products` AS `ProductModel` LIMIT NaN, NaN;"},"filename":"mysql_error.log","timestamp":"2023-12-27T13:00:31.816Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:06:10.903Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:08:39.353Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:08:47.137Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:09:17.577Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:09:59.956Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:10:14.509Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:10:19.504Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:11:27.778Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:11:46.555Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:12:30.623Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:13:05.915Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:15:18.945Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:15:27.886Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:15:39.727Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:16:04.113Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:16:27.935Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:17:00.074Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:17:02.775Z"}
+info: MySQL operation successfully completed {"timestamp":"2023-12-27T13:25:15.481Z"}

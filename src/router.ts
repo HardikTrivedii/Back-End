@@ -1,5 +1,7 @@
 import express = require("express");
-import { authRouter } from "./routers/authRouter";
+import { authRouter } from "./routers/auth.router";
+import { productRouter } from "./routers/product.router";
+import { orderRouter } from "./routers/order.router";
 
 export class Routes {
   protected basePath: any;
@@ -24,6 +26,8 @@ export class Routes {
   public path() {
     const router = express.Router();
     router.use("/auth", authRouter);
+    router.use("/product", productRouter);
+    router.use("/order", orderRouter);
 
     router.all("/*", (_req, res) => {
       return res.status(404).json({

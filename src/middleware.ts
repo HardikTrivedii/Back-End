@@ -17,7 +17,7 @@ export class Middleware {
         req.user = decoded;
         next();
       } else {
-        return res.json(ResponseBuilder.unauthorized);
+        return res.json(ResponseBuilder.unauthorized());
       }
     } catch (error) {
       console.log(error);
