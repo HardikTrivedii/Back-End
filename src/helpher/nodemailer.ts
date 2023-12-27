@@ -96,7 +96,10 @@ export class SendEmail {
         otp: otp,
       };
       // Replace placeholders with dynamic data
-      const processedHtml = this.replacePlaceholders(htmlTemplate, dynamicData);
+      const processedHtml = await this.replacePlaceholders(
+        htmlTemplate,
+        dynamicData
+      );
 
       // Setup email data
       const mailOptions = await this.mailOptions(email, processedHtml, name);
@@ -123,7 +126,6 @@ export class SendEmail {
       const dynamicData = {
         password: password,
       };
-      console.log("dynamicData", dynamicData);
       // Replace placeholders with dynamic data
       const processedHtml = await this.replacePlaceholders(
         htmlTemplate,

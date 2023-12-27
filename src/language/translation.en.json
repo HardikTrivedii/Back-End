@@ -3,6 +3,7 @@
   "USER_SUCESSFULLY_REGISTER": "User successfully registered",
   "USER_UPDATED_SUCESSFULLY": "User updated successfully",
   "USER_ALREADY_EXIST": "User already exists",
+  "USER_LISTS_SUCESSFULLY": "User lists get succesfully",
   "INTERNAL_SERVER_ERROR": "Internal Server Error",
   "BAD_REQUEST": "Bad Request",
   "INVALID_PASSWORD": "Invalid Password",
@@ -13,5 +14,15 @@
   "PASSWORD_RESET": "Password reset successfully",
   "PASSWORD_UPDATE": "Password updated successfully",
   "INVALID_OTP": "Invalid otp",
-  "OTP_EXPRIED": "OTP has expired."
+  "OTP_EXPRIED": "OTP has expired.",
+
+  "PRODUCT_ADDED_SUCESSFULLY": "Product added successfully",
+  "PRODUCT_UPDATED_SUCESSFULLY": "Product updated successfully",
+  "PRODUCT_DELETED_SUCESSFULLY": "Product deleted successfully",
+  "PRODUCT_LISTS_GET_SUCCESSFULLY": "Product lists get successfully",
+
+  "ORDER_ADDED_SUCESSFULLY": "Order added successfully",
+  "ORDER_LISTS_GET_SUCCESSFULLY": "Order lists get successfully",
+  "ORDER_UPDATED_SUCESSFULLY": "Order updated successfully",
+  "ORDER_DELETED_SUCESSFULLY": "Order deleted successfully"
 }

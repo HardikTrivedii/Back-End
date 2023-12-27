@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthUtils } from "../utils/authUtils";
+import { AuthUtils } from "../utils/auth.utils";
 import ResponseBuilder from "../helpher/responseBuilder";
 export class AuthMiddleware {
   private authUtils: AuthUtils;
@@ -36,7 +36,7 @@ export class AuthMiddleware {
       if (checkEmailExists.statusCode == 404) {
         return res.json(checkEmailExists);
       } else {
-        req.user = checkEmailExists.responseBody.data;
+        req.user = checkEmailExists.responseBody.data.get({ plain: true });
         next();
       }
     } catch (error) {

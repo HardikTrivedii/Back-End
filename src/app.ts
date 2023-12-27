@@ -1,10 +1,10 @@
 import express from "express";
 import { connectDB } from "./config/dbConfig";
 import bodyParser from "body-parser";
-const cors = require("cors");
 import * as dotenv from "dotenv";
 import { Routes } from "./router";
 import morgan from "morgan";
+import "./helpher/schedule-backup";
 const l10n = require("jm-ez-l10n");
 dotenv.config();
 connectDB();
@@ -37,16 +37,6 @@ export class App {
         next();
       }
     });
-    const corsOrigin = `${process.env.CORS_ORIGIN}`;
-    const corsMethods: any = `${process.env.CORS_METHODS}`;
-    const corsCredentials = `${process.env.CORS_CREDENTIALS}`;
-    this.app.use(
-      cors({
-        origin: corsOrigin,
-        methods: corsMethods.split(","), // Convert to an array of methods
-        credentials: corsCredentials === "true", // Convert to a boolean
-      })
-    );
     this.app.use(morgan("dev"));
     // Routes
     const routes = new Routes(this.NODE_ENV);

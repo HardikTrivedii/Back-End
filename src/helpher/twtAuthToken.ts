@@ -7,8 +7,9 @@ class JwtHelper {
     payload: Record<string, any>, // Change the type of payload
     expiresIn: string
   ): Promise<string> {
-    const plainObjectPayload = payload.toObject();
-    return await jwt.sign(plainObjectPayload, this.secretKey, { expiresIn });
+    // const plainObjectPayload = payload.toObject();
+    // console.log("plainObjectPayload", plainObjectPayload);
+    return await jwt.sign(payload, this.secretKey, { expiresIn });
   }
 
   static async verifyToken(token: string) {

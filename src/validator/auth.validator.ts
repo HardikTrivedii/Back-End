@@ -57,5 +57,10 @@ export class AuthValidator {
       .min(6)
       .required()
       .messages({ "string.empty": "New Password is required" }),
+
+    oldPassword: Joi.string()
+      .min(6)
+      .required()
+      .messages({ "string.empty": "New Password is required" }),
   });
 }
